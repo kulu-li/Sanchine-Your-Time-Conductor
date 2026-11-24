@@ -1,0 +1,17 @@
+node_modules
+dist
+.DS_Store
+*.tsbuildinfo
+data/
+bin/
+.env
+.env.*
+!.env.example
+
+# local databases and secrets
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.local

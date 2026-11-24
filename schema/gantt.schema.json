@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sanchine.local/schema/gantt.schema.json",
+  "title": "三线 Gantt snapshot",
+  "description": "Frozen API snapshot schema v1. The canonical runtime validator is schema/validate.mjs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "revision",
+    "updatedAt",
+    "initialized",
+    "tasks",
+    "zones"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "updatedAt": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "initialized": {
+      "type": "boolean"
+    },
+    "tasks": {
+      "type": "array",
+      "maxItems": 5000,
+      "items": {
+        "$ref": "#/$defs/task"
+      }
+    },
+    "zones": {
+      "type": "array",
+      "maxItems": 600,
+      "items": {
+        "$ref": "#/$defs/zone"
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "part": {
+      "type": "integer",
+      "enum": [0, 1, 2]
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "zoneId",
+        "title",
+        "startDate",
+        "startPart",
+        "endDate",
+        "endPart",
+        "done",
+        "note",
+        "order",
+        "createdAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "zoneId": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "startDate": {
+          "$ref": "#/$defs/date"
+        },
+        "startPart": {
+          "$ref": "#/$defs/part"
+        },
+        "endDate": {
+          "$ref": "#/$defs/date"
+        },
+        "endPart": {
+          "$ref": "#/$defs/part"
+        },
+        "done": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "order": {
+          "type": "number"
+        },
+        "createdAt": {
+          "type": "number"
+        },
+        "updatedAt": {
+          "type": "number"
+        }
+      }
+    },
+    "zone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "parentId", "color", "order"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "parentId": {
+          "type": ["string", "null"]
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "order": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
